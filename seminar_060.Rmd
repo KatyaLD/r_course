@@ -2,7 +2,7 @@
 title: 'Семинар 6. Красотища'
 date: 'Июнь, 18, 2018'
 output:
-  html_document:
+    word_document:
     keep_md: no
     number_sections: yes
     toc: yes
@@ -66,18 +66,23 @@ pulse_fct <- pulse %>%
 ```{r}
 model_r <- lm(data = pulse_fct, Pulse2 ~ Pulse1)
 model_ur <- lm(data = pulse_fct, Pulse2 ~ Weight + Pulse1 + Ran + Smokes)
+summary(model_ur)
 ```
 
 Способ с переоцениванием модели:
 ```{r}
 model_r_rob <- lm_robust(data = pulse_fct, Pulse2 ~ Pulse1)
 model_ur_rob <- lm_robust(data = pulse_fct, Pulse2 ~ Weight + Pulse1 + Ran + Smokes)
+summary(model_ur_rob)
 ```
 
 Проверка гипотез и доверительные интервалы с робастно оценёнными моделями:
 ```{r}
 coeftest(model_ur_rob)
 coefci(model_ur_rob)
+coefci(model_ur)
+plot(model_ur)
+resid(model_ur_rob)
 ```
 
 Сравнение двух робастно оценённых моделей:
@@ -89,6 +94,13 @@ waldtest(model_r_rob, model_ur_rob)
 ```{r}
 coeftest(model_ur, vcov. = vcovHC)
 coefci(model_ur, vcov. = vcovHC)
+
+```
+
+Тест на гетероскедастичность
+
+```{r}
+
 ```
 
 Результаты в R чуть отличаются от результатов в stata.
@@ -303,7 +315,7 @@ ggplot(data = pulse_fct, aes(x = Pulse1, y = Pulse2)) +
   geom_smooth(method = 'lm') + labs(x = 'Пульс до (уд/мин)', y = 'Пульс после (уд/мин)')
 ```
 
-Для примера процитируем несколько источников,
+Для примера процитируем несколько источников, @einstein1935can,
 @afanasyev92, @cobb2011teaching, @microsoftProject2008, @doe:website.
 
 Другие стилевые заготовки для оформления цитат можно скачать в архиве [zotero](https://www.zotero.org/styles).
